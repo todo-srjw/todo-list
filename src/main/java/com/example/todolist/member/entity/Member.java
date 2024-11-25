@@ -23,7 +23,4 @@ public class Member extends BaseEntity {
 
     @Column
     private String password;
-
-    @Column(name = "is_active")
-    private boolean isActive;
 }
