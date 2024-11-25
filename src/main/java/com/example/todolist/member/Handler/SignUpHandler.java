@@ -1,6 +1,5 @@
 package com.example.todolist.member.Handler;
 
-import com.example.todolist.member.controller.MemberController;
 import com.example.todolist.member.entity.ResponseDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

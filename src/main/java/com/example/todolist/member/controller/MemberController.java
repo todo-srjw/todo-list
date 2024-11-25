@@ -35,12 +35,12 @@ public class MemberController {
 
         Member member = memberService.convertToEntity(memberDTO);
 
-        String result = memberService.signUpMember(member);
-
-        if ("success".equals(result)) {
+        try {
+            memberService.signUpMember(member);
             return signUpHandler.getRedirectResponse(SUCCESS_MESSAGE, HttpStatus.CREATED, MAIN_PAGE_URL);
-        } else {
-            return signUpHandler.getResponse(result, HttpStatus.CONFLICT);
+
+        } catch (IllegalStateException e) {
+            return signUpHandler.getResponse(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 }

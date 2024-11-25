@@ -5,7 +5,7 @@ import com.example.todolist.member.entity.MemberDTO;
 
 public interface MemberService {
 
-    String signUpMember(Member member);
+    void signUpMember(Member member);
 
     MemberDTO convertToDto(Member member);
 

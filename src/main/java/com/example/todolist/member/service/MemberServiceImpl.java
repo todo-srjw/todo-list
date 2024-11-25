@@ -18,19 +18,11 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public String signUpMember(Member member) {
-        try {
-            if (memberRepository.existsByEmail(member.getEmail())) {
-                return "이메일 중복";
-            }
-            memberRepository.save(member);
-
-            return "success";
-        } catch (DataAccessException e) {
-            return "DB ERROR";
-        } catch (Exception e) {
-            return "ERROR";
+    public void signUpMember(Member member) {
+        if (memberRepository.existsByEmail(member.getEmail())) {
+            throw new IllegalStateException("이미 사용중인 이메일입니다.");
         }
+        memberRepository.save(member);
     }
 
     @Override
