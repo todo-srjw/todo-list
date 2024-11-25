@@ -1,30 +1,46 @@
 package com.example.todolist.member.controller;
 
+import com.example.todolist.member.Handler.SignUpHandler;
+import com.example.todolist.member.entity.Member;
 import com.example.todolist.member.entity.MemberDTO;
+import com.example.todolist.member.entity.ResponseDTO;
 import com.example.todolist.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("/member")
 @Log4j2
 @RequiredArgsConstructor
-@RequestMapping("/member")
 public class MemberController {
 
     private final MemberService memberService;
+    private final SignUpHandler signUpHandler;
 
-    @GetMapping("/register")
-    public String register() {
-        return "member/register";
+    private static final String SUCCESS_MESSAGE = "회원가입 성공";
+    private static final String MAIN_PAGE_URL = "/main";
+
+    @GetMapping("/signUp")
+    public String signUp() {
+        return "member/signUp";
     }
 
-    @PostMapping("/register")
-    public String register(MemberDTO memberDTO) {
-        return "redirect:/login?registerSuccess=true";
-    }
+    @PostMapping("/signUp")
+    public ResponseEntity<ResponseDTO> signUp(@RequestBody MemberDTO memberDTO) {
 
+        Member member = memberService.convertToEntity(memberDTO);
+
+        String result = memberService.signUpMember(member);
+
+        if ("success".equals(result)) {
+            return signUpHandler.getRedirectResponse(SUCCESS_MESSAGE, HttpStatus.CREATED, MAIN_PAGE_URL);
+        } else {
+            return signUpHandler.getResponse(result, HttpStatus.CONFLICT);
+        }
+    }
 }
