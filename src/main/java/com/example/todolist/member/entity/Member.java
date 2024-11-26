@@ -11,10 +11,12 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(exclude = "password")
+@EqualsAndHashCode(callSuper=true)
 public class Member extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq_gen")
+    @SequenceGenerator(name = "member_seq_gen", sequenceName = "member_seq", allocationSize = 1)
     @Column
     private Long mno;
 
@@ -23,4 +25,5 @@ public class Member extends BaseEntity {
 
     @Column
     private String password;
+
 }
