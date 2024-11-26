@@ -1,6 +1,6 @@
 package com.example.todolist.member.controller;
 
-import com.example.todolist.member.Handler.SignUpHandler;
+import com.example.todolist.member.Handler.ResponseHandler;
 import com.example.todolist.member.entity.Member;
 import com.example.todolist.member.entity.MemberDTO;
 import com.example.todolist.member.entity.ResponseDTO;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
-    private final SignUpHandler signUpHandler;
+    private final ResponseHandler signUpHandler;
 
     private static final String SUCCESS_MESSAGE = "회원가입 성공";
     private static final String MAIN_PAGE_URL = "/main";
