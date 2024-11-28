@@ -29,6 +29,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public boolean existsByEmail(String email) {
+        return memberRepository.existsByEmail(email);
+    }
+
+    @Override
     public MemberDTO convertToDto(Member member) {
         return MemberDTO.builder()
                 .mno(member.getMno())

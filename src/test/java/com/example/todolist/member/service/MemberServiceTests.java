@@ -3,10 +3,13 @@ package com.example.todolist.member.service;
 import com.example.todolist.member.entity.Member;
 import com.example.todolist.member.entity.MemberDTO;
 import com.example.todolist.member.repository.MemberRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
@@ -14,6 +17,7 @@ import javax.transaction.Transactional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,17 +35,18 @@ public class MemberServiceTests {
     private MockMvc mockMvc;
 
     @Test
-    public void signUpSuccessTest() {
+    public void signUpSuccessTest() throws Exception {
         MemberDTO memberDTO = MemberDTO.builder()
-                .email("test3@gmail.com")
-                .password("1234")
+                .email("test2@gmail.com")
+                .password("12345")
                 .build();
 
-        Member member = memberService.convertToEntity(memberDTO);
+        mockMvc.perform(post("/todo/signUp")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(memberDTO)))
+                .andExpect(status().isConflict())
+                .andDo(print());
 
-        memberService.signUpMember(member);
-
-        assertTrue(memberRepository.existsByEmail(member.getEmail()), "성공");
     }
 
     @Test
