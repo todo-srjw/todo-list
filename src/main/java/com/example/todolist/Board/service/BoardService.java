@@ -5,13 +5,13 @@ import com.example.todolist.Board.entity.BoardDTO;
 import java.util.List;
 
 public interface BoardService {
-    List<Board> getAllPost();
+    List<Board> getAllBoard();
 
-    BoardDTO getPostById(Long id);
+    BoardDTO getBoardById(Long id);
 
-    void createPost(BoardDTO planDto);
+    void createBoard(Board board);
 
-    BoardDTO updatePost(Long id, BoardDTO planDto);
+    BoardDTO updateBoard(Long id, BoardDTO planDto);
 
-    void deletePost(Long id);
+    void deleteBoard(Long id);
 }

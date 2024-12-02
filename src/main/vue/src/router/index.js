@@ -1,18 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '@/views/HomePage.vue';
 import BoardList from '@/views/BoardList.vue';
+import BoardWrite from "@/views/BoardWrite.vue";
+import BoardDetail from "@/views/BoardDetail.vue";
 
 const routes = [
     {
-        path: '/',  // 루트 경로
-        name: 'Home',  // 이름 지정
-        component: HomePage,  // BoardList 컴포넌트로 설정
+        path: '/',
+        name: 'Home',
+        component: HomePage,
     },
     {
-
-        path: '/board-list', // 게시판 리스트 경로
+        path: '/board-list',
         name: 'BoardList',
         component: BoardList,
+    },
+    {
+        path: '/board-write',
+        name: 'BardWrite',
+        component: BoardWrite
+    },
+    {
+        path: '/board-detail/:id',
+        name: 'BoardDetail',
+        component: BoardDetail
     },
 ];
 

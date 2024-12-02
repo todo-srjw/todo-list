@@ -16,7 +16,13 @@ public class Board extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String author;
+    private Long mno; //유저 아이디
+    private String name;
     private String title;
     private String content;
+    private String email;
+
+    @Column(name = "deleted", nullable = false)
+    @Builder.Default
+    private String deleted = "N"; // 빌더에서도 기본값 설정
 }
