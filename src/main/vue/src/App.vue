@@ -1,16 +1,19 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <header v-if="$route.path == '/'">
+      <h1>My Vue App</h1>
+      <!-- 페이지 이동 버튼 -->
+      <router-link to="/">Go to Home</router-link><br/>  <!-- 홈으로 이동 -->
+      <router-link to="/board-list">Go to BoardList</router-link> <!-- 게시판 리스트로 이동 -->
+    </header>
+    <!-- URL에 따라 해당 컴포넌트를 렌더링 -->
+    <router-view/>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
 }
 </script>
 
