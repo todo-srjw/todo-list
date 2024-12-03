@@ -7,27 +7,44 @@
 
     <!-- 게시글 목록을 보여주는 테이블 -->
     <table class="table">
+      <thead>
       <tr class="header">
         <td class="num">번호</td>
         <td class="title">제목</td>
-        <td class="author">작성자</td>
+        <td class="name">작성자</td>
         <td class="createdDate">작성날짜</td>
       </tr>
-      <tr v-for="board in boards" :key="board.id">
-        <td>{{ board.id }}</td>
-        <td>{{ board.title }}</td>
-        <td>{{ board.author }}</td>
+      </thead>
+      <tbody>
+      <tr v-for="(board, index) in boards" :key="board.id">
+        <td>{{ boards.length - index }}</td>
+        <td>
+          <router-link :to="{ name: 'BoardDetail', params: { id: board.id } }">
+            {{ board.title }}
+          </router-link>
+        </td>
+        <td>{{ board.name }}</td>
         <!-- 변환된 날짜 출력 -->
         <td>{{ formatDate(board.createdDate) }}</td>
       </tr>
-    </table><br/>
-    <table>
+      </tbody>
+    </table>
+
+    <!-- 글쓰기 버튼을 위한 테이블 -->
+    <table class="button-table">
+      <tbody>
       <tr>
-        <td><button onclick="location.href='write.html'">글쓰기</button></td>
+        <td>
+          <router-link to="/board-write">
+            <button>글쓰기</button>
+          </router-link>
+        </td>
       </tr>
+      </tbody>
     </table>
   </div>
 </template>
+
 <script>
 import axios from 'axios'
 
@@ -45,7 +62,7 @@ export default {
   methods: {
     // API 호출하여 게시글 데이터를 가져오는 함수
     getData() {
-      axios.get('http://localhost:8080/todo/board')  // Spring Boot API 경로
+      axios.get('http://localhost:8080/todo/board/list')  // Spring Boot API 경로
           .then(response => {
             this.boards = response.data  // API로부터 받은 데이터를 boards 배열에 저장
             console.log("board controller : "+response.data);
@@ -67,6 +84,7 @@ export default {
 </script>
 
 <style>
+/* 테이블 스타일 */
 table {
   margin: auto;
   width: 700px;
@@ -74,27 +92,33 @@ table {
   border-collapse: collapse;
   border-top: none;
 }
+
+/* 게시판 테이블 헤더 스타일 */
 .header {
   background-color: rgb(218, 231, 255);
   text-align: center;
 }
+
 .table td, .table th {
   border-bottom: 1px lightgray solid;
   height: 30px;
   font-size: 14px;
 }
+
 .num {
   width: 50px;
 }
+
 .title {
   width: 500px;
 }
-.body {
+
+/* 글쓰기 버튼 테이블에 여백을 추가 */
+.button-table {
+  margin-top: 20px; /* 버튼과 게시글 테이블 사이에 간격을 추가 */
   text-align: center;
 }
-.body .title {
-  text-align: left;
-}
+
 button {
   width: 100px;
   height: 40px;
@@ -105,6 +129,7 @@ button {
   padding-left: 10px;
   background-color: rgb(164, 199, 255);
 }
+
 button:active {
   width: 100px;
   height: 40px;

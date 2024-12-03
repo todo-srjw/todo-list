@@ -2,7 +2,6 @@
   <div>
     <h1>Welcome to the Home Page</h1>
     <p>This is the home page of your Vue app.</p>
-    <router-link to="/board-list">Go to Board List</router-link>
   </div>
 </template>
 

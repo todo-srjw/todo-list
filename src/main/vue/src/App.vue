@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <header v-if="$route.path !== '/board-list'">
+    <header v-if="$route.path == '/'">
       <h1>My Vue App</h1>
       <!-- 페이지 이동 버튼 -->
       <router-link to="/">Go to Home</router-link><br/>  <!-- 홈으로 이동 -->

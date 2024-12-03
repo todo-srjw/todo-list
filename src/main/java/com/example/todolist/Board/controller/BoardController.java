@@ -7,56 +7,67 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/todo")
-//@CrossOrigin(origins = "http://localhost:8081")  // Vue 앱이 실행되는 포트(8081)에 대해 허용
+@RequestMapping("/todo/board")
 public class BoardController {
 
     @Autowired
-    private BoardService postService;
+    private BoardService boardService;
 
-    @GetMapping("/board")
-    public ResponseEntity<List<Board>> getAllPosts() {
-        log.info("PostController.getAllPosts start");
-        return new ResponseEntity<>(postService.getAllPost(), HttpStatus.OK);
+    public BoardController(BoardService boardService) {
+        this.boardService = boardService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<BoardDTO> getPostById(@PathVariable Long id) {
-        log.info("PostController.getPostById id : {}", id);
-        BoardDTO postDto = postService.getPostById(id);
-        return ResponseEntity.ok(postDto);
+    @GetMapping("/list")
+    public ResponseEntity<List<Board>> getBoardList() {
+        log.info("BoardController.getBoardList start");
+        return new ResponseEntity<>(boardService.getAllBoard(), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<BoardDTO> createPost(@RequestBody BoardDTO postDto) {
-        log.info("PostController.createPost postDto : {}", postDto);
-        postService.createPost(postDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<BoardDTO> getBoardById(@PathVariable Long id) {
+        log.info("BoardController.getBoardById id : {}", id);
+        BoardDTO boardDto = boardService.getBoardById(id);
+        return boardDto != null ? ResponseEntity.ok(boardDto) : ResponseEntity.notFound().build();
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<PostDTO> updatePost(@PathVariable Long id, @RequestBody PostDTO postDTO) {
-//        logger.info("PostController.updatePost id : {}, postDto : {}" , id, postDTO.toString());
-//        PostDTO updatedPost = postService.updatePost(id, postDTO);
-//        return ResponseEntity.ok(updatedPost);
-//    }
+    @PostMapping("/createBoard")
+    public ResponseEntity<String> createBoard(@RequestBody Board board) {
+        log.info("BoardController.createBoard board : {}", board);
 
-    @PutMapping("/{id}")
-    public ResponseEntity<BoardDTO> updatePost(@PathVariable Long id, @RequestBody BoardDTO postDTO) {
-        log.info("PostController.updatePost id : {}, postDto : {}" , id, postDTO.toString());
-        BoardDTO updatedPost = postService.updatePost(id, postDTO);
-        return ResponseEntity.ok(updatedPost);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            log.error("인증 정보가 유효하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증 정보가 유효하지 않습니다.");
+        }
+
+        String username = authentication.getName();
+        log.info("로그인된 사용자 EMAIL : {}", username);
+
+        // 현재 로그인한 사용자의 이메일을 게시글에 설정
+        board.setEmail(username);
+        boardService.createBoard(board);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("작성 완료");
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
-        postService.deletePost(id);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<BoardDTO> updateBoard(@PathVariable Long id, @RequestBody BoardDTO boardDTO) {
+        log.info("BoardController.updateBoard id : {}, boardDTO : {}" , id, boardDTO.toString());
+        BoardDTO updatedBoard = boardService.updateBoard(id, boardDTO);
+        return ResponseEntity.ok(updatedBoard);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
+        log.info("BoardController.deleteBoard id : {}" , id);
+        boardService.deleteBoard(id);
         return ResponseEntity.noContent().build();
     }
 

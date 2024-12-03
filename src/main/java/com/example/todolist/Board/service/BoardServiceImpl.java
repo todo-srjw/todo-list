@@ -3,58 +3,83 @@ package com.example.todolist.Board.service;
 import com.example.todolist.Board.entity.Board;
 import com.example.todolist.Board.entity.BoardDTO;
 import com.example.todolist.Board.repository.BoardRepository;
+import com.example.todolist.member.entity.Member;
+import com.example.todolist.member.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Sort;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 public class BoardServiceImpl implements BoardService {
 
-    private final BoardRepository postRepository;
+    private final BoardRepository boardRepository;
 
-    public BoardServiceImpl(BoardRepository postRepository) {
-        this.postRepository = postRepository;
+    public BoardServiceImpl(BoardRepository BoardRepository, BoardRepository boardRepository) {
+        this.boardRepository = boardRepository;
     }
+
+    @Autowired
+    private MemberRepository memberRepository;
 
 
     @Override
-    public List<Board> getAllPost() {
-        //실제 데이터를 가져오는 코드
-        return postRepository.findAll();
-    }
-
-//데이터 없을때 테스트 코드용
-//    @Override
-//    public List<PostDTO> getAllPost() {
-//        // 임시로 DTO 객체를 반환하는 예시
-//        // TO-DO : 실제 데이터 가져오기 SELECT
-//        PostDTO post1 = new PostDTO(1L, "author1", "title1", "content1", LocalDateTime.now());
-//        PostDTO post2 = new PostDTO(2L, "author2", "title2", "content2", LocalDateTime.now());
-//        return List.of(post1, post2);  // 임시로 2개의 데이터 반환
-//    }
-
-    @Override
-    public BoardDTO getPostById(Long id) {
-        // TO-DO
-        // 1. 아이디값이 여기에 잘 가져오는지
-        // 2. 조회
-        return null;
+    public List<Board> getAllBoard() {
+        Sort sort = Sort.by(Sort.Order.desc("id"));
+        return boardRepository.findByDeleted("N", sort);
     }
 
     @Override
-    public void createPost(BoardDTO planDto) {
-
+    public BoardDTO getBoardById(Long id) {
+        return boardRepository.findById(id)
+                .map(board -> new BoardDTO(board.getId()
+                        , board.getName()
+                        , board.getTitle()
+                        , board.getContent()
+                        , board.getEmail()
+                        , board.getCreatedDate()
+                        , board.getUpdatedDate()))
+                .orElse(null);
     }
 
     @Override
-    public BoardDTO updatePost(Long id, BoardDTO planDto) {
-
-        return planDto;
+    public void createBoard(Board board) {
+        /*
+        Optional<Member> optionalMember = memberRepository.findByEmail(board.getEmail());
+        optionalMember.ifPresent(member -> {
+            board.setName(member.getName());  // Member의 이름을 Board에 설정
+        });
+        */
+        boardRepository.save(board);
     }
 
     @Override
-    public void deletePost(Long id) {
+    public BoardDTO updateBoard(Long id, BoardDTO boardDto) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다.") );
 
+        board.setTitle(boardDto.getTitle());
+        board.setContent(boardDto.getContent());
+        boardRepository.save(board);
+        return boardDto;
     }
+
+    @Override
+    public void deleteBoard(Long id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+
+        board.setDeleted("Y");
+        boardRepository.save(board);
+    }
+
+    /* 테이블 해당 행 완전 삭제
+    @Override
+    public void deleteBoard(Long id) {
+        Optional<Board> board = boardRepository.findById(id);
+        if(board.isPresent()) boardRepository.deleteById(id);
+        else throw new RuntimeException("게시글을 찾을 수 없습니다.");
+    }*/
 }

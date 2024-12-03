@@ -1,4 +1,4 @@
-package com.example.todolist.post.service;
+package com.example.todolist.board.service;
 
 import com.example.todolist.Board.entity.Board;
 import com.example.todolist.Board.repository.BoardRepository;
@@ -25,9 +25,11 @@ class BoardServiceTest {
     // 테스트 데이터를 삽입하는 메서드
     private void insertTestData() {
         Board board = Board.builder()
-                .author("김소련")
-                .title("Vue.js로 게시판 만들기")
-                .content("이것은 Vue.js와 Spring Boot를 사용하여 게시판을 구현하는 방법에 대한 글입니다.")
+                .mno(Long.parseLong("10"))
+                .email("test1@gmail.com")
+                .name("변우석")
+                .title("변우석에 메모장")
+                .content("게시판을 구현하는 방법에 대한 글입니다~!&*^.")
                 .build();
 
         boardRepository.save(board);  // 데이터를 DB에 저장
@@ -42,7 +44,7 @@ class BoardServiceTest {
     @Test
     void testGetAllBoards() {
         // 모든 게시글을 조회하는 테스트
-        List<Board> boards = boardService.getAllPost();
+        List<Board> boards = boardService.getAllBoard();
 
         // 게시글이 하나 이상 있어야 함
         assertNotNull(boards);
