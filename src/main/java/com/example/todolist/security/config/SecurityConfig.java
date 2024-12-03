@@ -49,6 +49,7 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/signIn")
                 .and()
                 .cors();
+
         return http.build();
     }
 }
