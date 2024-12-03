@@ -42,11 +42,15 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
+                .loginPage("/todo/member/signIn") // 사용자 정의 로그인 페이지
+                .loginProcessingUrl("/todo/member/signIn") // 로그인 처리 URL
                 .defaultSuccessUrl("/",true)
                 .and()
                 .logout()
+                .invalidateHttpSession(true) // 세션 무효화
+                .clearAuthentication(true) // 인증 정보 제거
                 .logoutUrl("/todo/member/signOut")
-                .logoutSuccessUrl("/todo/member/signIn")
+                .logoutSuccessUrl("/")
                 .and()
                 .cors();
 

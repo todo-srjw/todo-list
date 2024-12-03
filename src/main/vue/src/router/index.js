@@ -3,6 +3,8 @@ import HomePage from '@/views/HomePage.vue';
 import BoardList from '@/views/BoardList.vue';
 import BoardWrite from "@/views/BoardWrite.vue";
 import BoardDetail from "@/views/BoardDetail.vue";
+import SignUp from "@/views/member/SignUp.vue";
+import SignIn from "@/views/member/SignIn.vue";
 
 const routes = [
     {
@@ -24,6 +26,16 @@ const routes = [
         path: '/board-detail/:id',
         name: 'BoardDetail',
         component: BoardDetail
+    },
+    {
+        path: '/sign-up',
+        name: 'SignUp',
+        component: SignUp
+    },
+    {
+        path: '/sign-in',
+        name: 'SignIn',
+        component: SignIn
     },
 ];
 

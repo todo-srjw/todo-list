@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 @Log4j2
-@RequestMapping("/todo")
+@RequestMapping("/todo/member")
 public class AuthController {
 
     private final ResponseHandler responseHandler;
@@ -27,7 +27,7 @@ public class AuthController {
 
     @GetMapping("/signIn")
     public String signIn() {
-        return "todo/signIn";
+        return "todo/member/signIn";
     }
 
     @PostMapping("/signIn")
@@ -56,7 +56,7 @@ public class AuthController {
             log.info("fail!!");
 
             // 로그인 실패 시 에러 메시지 전달
-            return "redirect:/signIn?error=true";
+            return "redirect:/todo/member/signIn?error=true";
         }
 
     }
