@@ -10,4 +10,6 @@ public interface MemberService {
     MemberDTO convertToDto(Member member);
 
     Member convertToEntity(MemberDTO memberDTO);
+
+    boolean existsByEmail(String email);
 }

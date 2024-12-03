@@ -38,15 +38,15 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/signIn", "/signUp", "/todo/board/*").permitAll()
+                .antMatchers("/todo/member/*", "/todo/board/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .defaultSuccessUrl("/",true)
                 .and()
                 .logout()
-                .logoutUrl("/signOut")
-                .logoutSuccessUrl("/signIn")
+                .logoutUrl("/todo/member/signOut")
+                .logoutSuccessUrl("/todo/member/signIn")
                 .and()
                 .cors();
 
