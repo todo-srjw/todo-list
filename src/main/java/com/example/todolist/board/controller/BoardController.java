@@ -1,8 +1,8 @@
-package com.example.todolist.Board.controller;
+package com.example.todolist.board.controller;
 
-import com.example.todolist.Board.entity.Board;
-import com.example.todolist.Board.entity.BoardDTO;
-import com.example.todolist.Board.service.BoardService;
+import com.example.todolist.board.entity.Board;
+import com.example.todolist.board.entity.BoardDTO;
+import com.example.todolist.board.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

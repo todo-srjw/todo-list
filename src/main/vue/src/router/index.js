@@ -3,6 +3,7 @@ import HomePage from '@/views/HomePage.vue';
 import BoardList from '@/views/BoardList.vue';
 import BoardWrite from "@/views/BoardWrite.vue";
 import BoardDetail from "@/views/BoardDetail.vue";
+import TodoList from "@/views/TodoList.vue";
 
 const routes = [
     {
@@ -24,6 +25,11 @@ const routes = [
         path: '/board-detail/:id',
         name: 'BoardDetail',
         component: BoardDetail
+    },
+    {
+        path: '/todo-list',
+        name: 'TodoList',
+        component: TodoList
     },
 ];
 

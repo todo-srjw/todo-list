@@ -4,7 +4,8 @@
       <h1>My Vue App</h1>
       <!-- 페이지 이동 버튼 -->
       <router-link to="/">Go to Home</router-link><br/>  <!-- 홈으로 이동 -->
-      <router-link to="/board-list">Go to BoardList</router-link> <!-- 게시판 리스트로 이동 -->
+      <router-link to="/board-list">Go to BoardList</router-link><br/> <!-- 게시판 리스트로 이동 -->
+      <router-link to="/todo-list">Go to TodoList</router-link> <!-- 게시판 리스트로 이동 -->
     </header>
     <!-- URL에 따라 해당 컴포넌트를 렌더링 -->
     <router-view/>

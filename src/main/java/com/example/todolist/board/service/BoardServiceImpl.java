@@ -1,15 +1,13 @@
-package com.example.todolist.Board.service;
+package com.example.todolist.board.service;
 
-import com.example.todolist.Board.entity.Board;
-import com.example.todolist.Board.entity.BoardDTO;
-import com.example.todolist.Board.repository.BoardRepository;
-import com.example.todolist.member.entity.Member;
+import com.example.todolist.board.entity.Board;
+import com.example.todolist.board.entity.BoardDTO;
+import com.example.todolist.board.repository.BoardRepository;
 import com.example.todolist.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
