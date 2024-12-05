@@ -17,8 +17,7 @@ import java.util.List;
 @RequestMapping("/todo/board")
 public class BoardController {
 
-    @Autowired
-    private BoardService boardService;
+    final BoardService boardService;
 
     public BoardController(BoardService boardService) {
         this.boardService = boardService;

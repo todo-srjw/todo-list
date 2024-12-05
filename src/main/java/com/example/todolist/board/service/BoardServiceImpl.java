@@ -14,14 +14,12 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
 
-    public BoardServiceImpl(BoardRepository BoardRepository, BoardRepository boardRepository) {
+    public BoardServiceImpl(BoardRepository boardRepository, MemberRepository memberRepository) {
         this.boardRepository = boardRepository;
+        this.memberRepository = memberRepository;
     }
-
-    @Autowired
-    private MemberRepository memberRepository;
-
 
     @Override
     public List<Board> getAllBoard() {
