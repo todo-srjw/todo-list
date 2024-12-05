@@ -1,32 +1,34 @@
 <template>
   <div class="container">
-    <h1 class="title">To-Do List</h1>
+    <h1 class="title">Task List</h1>
+    <form @submit.prevent="submitForm">
+      <!-- 입력 필드 -->
+      <div class="input-container">
+        <input
+            type="text"
+            placeholder="새로운 작업 추가"
+            class="task-input"
+            v-model="newTask"
+        />
+        <input
+            type="date"
+            v-model="newStartDate"
+            class="date-input"
+        />
+        <button class="add-btn" @click="addTask">추가</button>
+      </div>
+    </form>
 
-    <!-- 입력 필드 -->
-    <div class="input-container">
-      <input
-          type="text"
-          placeholder="새로운 작업 추가..."
-          class="task-input"
-          v-model="newTask"
-      />
-      <input
-          type="date"
-          v-model="newStartDate"
-          class="date-input"
-      />
-      <button class="add-btn" @click="addTask">추가</button>
-    </div>
-
-    <!-- 할 일 목록 -->
+    <!-- 작업 목록 -->
     <ul class="task-list">
       <li v-for="(task, index) in tasks" :key="index" class="task-item">
         <div class="task-row">
-          <input
-              type="checkbox"
-              :checked="task.completed"
-              @change="toggleTask(index)"
-          />
+<!--          <input-->
+<!--              type="checkbox"-->
+<!--              :checked="task.completed"-->
+<!--              @change="toggleTask(index)"-->
+<!--          />-->
+          <!-- 작업 텍스트 -->
           <span
               v-if="!task.editing"
               :class="{ completed: task.completed }"
@@ -35,12 +37,24 @@
             {{ task.text }}
           </span>
           <input
-              v-else
+              v-if="task.editing"
               type="text"
               v-model="task.text"
               class="task-edit-input"
           />
-          <span class="task-date">시작일: {{ task.startDate || "미정" }}</span>
+
+          <!-- 시작일 -->
+          <span class="task-date" v-if="!task.editing">
+            시작일: {{ task.startDate || "미정" }}
+          </span>
+          <input
+              v-if="task.editing"
+              type="date"
+              v-model="task.startDate"
+              class="date-edit-input"
+          />
+
+          <!-- 버튼 -->
           <button class="edit-btn" @click="toggleEdit(index)">
             {{ task.editing ? "저장" : "수정" }}
           </button>
@@ -52,36 +66,93 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import axios from "axios";
 
 export default {
-  name: "TodoList",
+  name: "TaskList",
   setup() {
     const newTask = ref(""); // 작업 이름
     const newStartDate = ref(""); // 시작일
     const tasks = ref([]); // 작업 목록
 
-    const addTask = () => {
-      if (newTask.value.trim() === "") return; // 작업명이 비어있으면 추가하지 않음
-      tasks.value.push({
-        text: newTask.value,
-        startDate: newStartDate.value || "미정", // 시작일이 없으면 "미정"
-        completed: false,
-        editing: false,
-      });
-      newTask.value = ""; // 입력값 초기화
-      newStartDate.value = ""; // 시작일 초기화
+    const getTasks = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/todo/task/list");
+        // 서버에서 받아온 데이터를 editing 속성을 추가하여 초기화
+        tasks.value = response.data.map((task) => ({
+          ...task,
+          editing: false, // 수정 모드 초기값
+        }));
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
     };
 
-    const deleteTask = (index) => {
-      tasks.value.splice(index, 1); // 작업 삭제
+    // 컴포넌트가 마운트될 때 작업 목록을 서버에서 가져옴
+    onMounted(() => {
+      getTasks();
+    });
+
+    const addTask = async () => {
+      if (newTask.value.trim() === "") return; // 작업명이 비어있으면 추가하지 않음
+      const task = {
+        text: newTask.value,
+        startDate: newStartDate.value || "미정",
+        completed: false,
+      };
+      try {
+        const response = await axios.post("http://localhost:8080/todo/task/createTask",task);
+        tasks.value.push({ ...response.data, editing: false }); // 추가된 작업에 editing 속성 추가
+        newTask.value = "";
+        newStartDate.value = "";
+      } catch (error) {
+        console.error("Error adding task:", error);
+      }
+    };
+
+    const deleteTask = async (index) => {
+      const task = tasks.value[index];
+      if (confirm("정말로 삭제하시겠습니까?")) {
+        try {
+          // 서버에 DELETE 요청
+          await axios.delete(`http://localhost:8080/todo/task/deleteTask/${task.id}`);
+          alert("삭제 완료");
+
+          // 최신 데이터 다시 가져오기
+          await getTasks(); // 서버에서 작업 목록 갱신
+        } catch (error) {
+          console.error("삭제 오류:", error);
+          alert("삭제 중 오류가 발생했습니다.");
+        }
+      } else {
+        console.log("삭제 취소됨");
+      }
     };
 
     const toggleTask = (index) => {
       tasks.value[index].completed = !tasks.value[index].completed; // 완료 상태 토글
     };
 
-    const toggleEdit = (index) => {
+    const toggleEdit = async (index) => {
+      const task = tasks.value[index];
+      if (task.editing) {
+        // 저장 로직
+        try {
+          const updatedTask = {
+            text: task.text, // 수정된 텍스트
+            startDate: task.startDate, // 수정된 시작일
+          };
+          // 서버에 PUT 요청 보내서 데이터를 업데이트
+          await axios.put(
+              `http://localhost:8080/todo/task/updateTask/${task.id}`,
+              updatedTask
+          );
+          console.log("Task updated:", updatedTask);
+        } catch (error) {
+          console.error("Error updating task:", error);
+        }
+      }
       tasks.value[index].editing = !tasks.value[index].editing; // 수정 모드 토글
     };
 
@@ -172,7 +243,7 @@ body {
   background-color: #6f6f6f;
 }
 
-/* 할 일 목록 스타일 */
+/* 작업 목록 스타일 */
 .task-list {
   list-style: none;
   padding: 0;
