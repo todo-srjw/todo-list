@@ -4,6 +4,7 @@ import BoardList from '@/views/BoardList.vue';
 import BoardWrite from "@/views/BoardWrite.vue";
 import BoardDetail from "@/views/BoardDetail.vue";
 import TodoList from "@/views/TodoList.vue";
+import NotificationList from "@/views/NotificationList.vue";
 
 const routes = [
     {
@@ -30,6 +31,11 @@ const routes = [
         path: '/todo-list',
         name: 'TodoList',
         component: TodoList
+    },
+    {
+        path: '/notification-list',
+        name: 'NotificationList',
+        component: NotificationList
     },
 ];
 
