@@ -1,25 +1,28 @@
 package com.example.todolist.security.controller;
 
+import com.example.todolist.common.MessageConstants;
 import com.example.todolist.member.Handler.ResponseHandler;
 import com.example.todolist.member.entity.Member;
 import com.example.todolist.member.entity.MemberDTO;
+import com.example.todolist.member.entity.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import javax.validation.Valid;
+
+@RestController
 @RequiredArgsConstructor
 @Log4j2
 @RequestMapping("/todo/member")
+@CrossOrigin(origins = "http://localhost:8080")
 public class AuthController {
 
     private final ResponseHandler responseHandler;
@@ -31,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/signIn")
-    public String signIn(@ModelAttribute MemberDTO memberDTO) {
+    public ResponseEntity<ResponseDTO> signIn(@Valid @RequestBody MemberDTO memberDTO) {
         try {
             Member member = Member.builder()
                     .email(memberDTO.getEmail())
@@ -50,13 +53,13 @@ public class AuthController {
             log.info("success!!");
 
             // 로그인 성공 후 리다이렉트할 URL
-            return "redirect:/";
+            return responseHandler.getRedirectResponse(MessageConstants.SUCCESS_SIGN_IN, HttpStatus.OK, MessageConstants.MAIN_PAGE_URL);
 
         } catch (BadCredentialsException e) {
             log.info("fail!!");
 
             // 로그인 실패 시 에러 메시지 전달
-            return "redirect:/todo/member/signIn?error=true";
+            return responseHandler.getResponse(MessageConstants.FAIL_SIGN_IN, HttpStatus.BAD_REQUEST);
         }
 
     }

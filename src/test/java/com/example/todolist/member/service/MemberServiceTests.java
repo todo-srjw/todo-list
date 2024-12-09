@@ -70,7 +70,7 @@ public class MemberServiceTests {
     @Test
     public void signInSuccessTest() throws Exception {
         mockMvc.perform(post("/todo/member/signIn")
-                        .param("username", "test@gmail.com") // Spring Security가 기대하는 파라미터
+                        .param("username", "test1@gmail.com") // Spring Security가 기대하는 파라미터
                         .param("password", "12345") // Spring Security가 기대하는 파라미터
                         .with(SecurityMockMvcRequestPostProcessors.csrf())) // CSRF 토큰
                 .andExpect(status().is3xxRedirection())

@@ -7,4 +7,6 @@ public class MessageConstants {
     public static final String EMAIL_DUPLICATE_MESSAGE = "이메일 중복";
     public static final String EMAIL_AVAILABLE_MESSAGE = "이메일 사용가능";
     public static final String MAIN_PAGE_URL = "/";
+    public static final String SUCCESS_SIGN_IN = "로그인 성공";
+    public static final String FAIL_SIGN_IN = "로그인 실패";
 }
