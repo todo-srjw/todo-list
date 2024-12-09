@@ -47,10 +47,8 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                    .loginPage("/todo/member/signIn")
                     .usernameParameter("email")
                     .passwordParameter("password")
-                    .defaultSuccessUrl("/",true)
                 .and()
                 .logout()
                 .invalidateHttpSession(true) // 세션 무효화
