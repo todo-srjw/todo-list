@@ -4,9 +4,12 @@
       <h1>My Vue App</h1>
       <!-- 페이지 이동 버튼 -->
       <div><router-link to="/">Go to Home</router-link><br/></div>  <!-- 홈으로 이동 -->
-      <div><router-link to="/board-list">Go to BoardList</router-link></div> <!-- 게시판 리스트로 이동 -->
       <div><router-link to="/sign-up">Go to SignUp</router-link></div> <!-- 회원가입 으로 이동 -->
       <div><router-link to="/sign-in">Go to SignIn</router-link></div> <!-- 로그인 으로 이동 -->
+<!--      <router-link to="/">Go to Home</router-link><br/>  &lt;!&ndash; 홈으로 이동 &ndash;&gt;-->
+      <router-link to="/board-list">Go to BoardList</router-link><br/> <!-- 게시판 리스트로 이동 -->
+      <router-link to="/todo-list">Go to TodoList</router-link> <br/><!-- to do 리스트로 이동 -->
+      <router-link to="/notification-list">Go to NotificationList</router-link> <br/><!-- 알림 리스트로 이동 -->
     </header>
     <!-- URL에 따라 해당 컴포넌트를 렌더링 -->
     <router-view/>

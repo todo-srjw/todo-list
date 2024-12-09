@@ -1,8 +1,8 @@
-package com.example.todolist.Board.controller;
+package com.example.todolist.board.controller;
 
-import com.example.todolist.Board.entity.Board;
-import com.example.todolist.Board.entity.BoardDTO;
-import com.example.todolist.Board.service.BoardService;
+import com.example.todolist.board.entity.Board;
+import com.example.todolist.board.entity.BoardDTO;
+import com.example.todolist.board.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,8 +17,7 @@ import java.util.List;
 @RequestMapping("/todo/board")
 public class BoardController {
 
-    @Autowired
-    private BoardService boardService;
+    final BoardService boardService;
 
     public BoardController(BoardService boardService) {
         this.boardService = boardService;

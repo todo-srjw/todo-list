@@ -1,7 +1,7 @@
-package com.example.todolist.Board.service;
+package com.example.todolist.board.service;
 
-import com.example.todolist.Board.entity.Board;
-import com.example.todolist.Board.entity.BoardDTO;
+import com.example.todolist.board.entity.Board;
+import com.example.todolist.board.entity.BoardDTO;
 import java.util.List;
 
 public interface BoardService {

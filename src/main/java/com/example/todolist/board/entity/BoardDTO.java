@@ -1,6 +1,5 @@
-package com.example.todolist.Board.entity;
+package com.example.todolist.board.entity;
 
-import com.example.todolist.common.BaseEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;

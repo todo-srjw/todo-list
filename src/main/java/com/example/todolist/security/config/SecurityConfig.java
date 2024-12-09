@@ -43,7 +43,7 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/todo/member/*", "/todo/board/*").permitAll()
+                .antMatchers("/todo/member/*", "/todo/board/*", "todo/task/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -57,7 +57,6 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/")
                 .and()
                 .cors();
-
         return http.build();
     }
 

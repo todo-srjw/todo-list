@@ -1,6 +1,6 @@
-package com.example.todolist.Board.repository;
+package com.example.todolist.board.repository;
 
-import com.example.todolist.Board.entity.Board;
+import com.example.todolist.board.entity.Board;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.domain.Sort;
 import java.util.List;

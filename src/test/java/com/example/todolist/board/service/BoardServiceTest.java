@@ -1,8 +1,7 @@
 package com.example.todolist.board.service;
 
-import com.example.todolist.Board.entity.Board;
-import com.example.todolist.Board.repository.BoardRepository;
-import com.example.todolist.Board.service.BoardService;
+import com.example.todolist.board.entity.Board;
+import com.example.todolist.board.repository.BoardRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +26,8 @@ class BoardServiceTest {
         Board board = Board.builder()
                 .mno(Long.parseLong("10"))
                 .email("test1@gmail.com")
-                .name("변우석")
-                .title("변우석에 메모장")
+                .name("김향단")
+                .title("김향단에 메모장")
                 .content("게시판을 구현하는 방법에 대한 글입니다~!&*^.")
                 .build();
 

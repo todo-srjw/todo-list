@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '@/views/HomePage.vue';
-import BoardList from '@/views/BoardList.vue';
-import BoardWrite from "@/views/BoardWrite.vue";
-import BoardDetail from "@/views/BoardDetail.vue";
+import BoardList from '@/views/board/BoardList.vue';
+import BoardWrite from "@/views/board/BoardWrite.vue";
+import BoardDetail from "@/views/board/BoardDetail.vue";
+import TodoList from "@/views/TodoList.vue";
+import NotificationList from "@/views/Notification.vue";
 import SignUp from "@/views/member/SignUp.vue";
 import SignIn from "@/views/member/SignIn.vue";
 
@@ -36,6 +38,16 @@ const routes = [
         path: '/sign-in',
         name: 'SignIn',
         component: SignIn
+    },
+    {
+        path: '/todo-list',
+        name: 'TodoList',
+        component: TodoList
+    },
+    {
+        path: '/notification-list',
+        name: 'NotificationList',
+        component: NotificationList
     },
 ];
 
