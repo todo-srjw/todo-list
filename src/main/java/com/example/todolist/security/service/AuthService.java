@@ -3,6 +3,7 @@ package com.example.todolist.security.service;
 import com.example.todolist.member.entity.Member;
 import com.example.todolist.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class AuthService implements UserDetailsService {
 
     private final MemberRepository memberRepository;

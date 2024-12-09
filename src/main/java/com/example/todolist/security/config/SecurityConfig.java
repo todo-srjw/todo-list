@@ -11,6 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -42,9 +47,8 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/todo/member/signIn") // 사용자 정의 로그인 페이지
-                .loginProcessingUrl("/todo/member/signIn") // 로그인 처리 URL
-                .defaultSuccessUrl("/",true)
+                    .usernameParameter("email")
+                    .passwordParameter("password")
                 .and()
                 .logout()
                 .invalidateHttpSession(true) // 세션 무효화
@@ -55,5 +59,19 @@ public class SecurityConfig {
                 .cors();
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(Arrays.asList("http://localhost:8080")); // 클라이언트 URL
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config); // 모든 요청에 대해 CORS 정책 적용
+
+        return source;
     }
 }
