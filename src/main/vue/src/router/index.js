@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '@/views/HomePage.vue';
-import BoardList from '@/views/BoardList.vue';
-import BoardWrite from "@/views/BoardWrite.vue";
-import BoardDetail from "@/views/BoardDetail.vue";
+import BoardList from '@/views/board/BoardList.vue';
+import BoardWrite from "@/views/board/BoardWrite.vue";
+import BoardDetail from "@/views/board/BoardDetail.vue";
 import TodoList from "@/views/TodoList.vue";
-import NotificationList from "@/views/NotificationList.vue";
+import NotificationList from "@/views/Notification.vue";
 
 const routes = [
     {
