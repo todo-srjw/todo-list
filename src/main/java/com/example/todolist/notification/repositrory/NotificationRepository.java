@@ -1,4 +1,8 @@
 package com.example.todolist.notification.repositrory;
 
-public interface NotificationRepository {
+import com.example.todolist.notification.entity.Notification;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface NotificationRepository extends JpaRepository<Notification, Long> {
+
 }
