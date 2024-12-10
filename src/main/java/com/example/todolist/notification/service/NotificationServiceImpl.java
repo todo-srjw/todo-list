@@ -16,7 +16,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public List<Notification> getAllNotification() {
-        return List.of();
+        return notificationRepository.findAll();
     }
 
     @Override
