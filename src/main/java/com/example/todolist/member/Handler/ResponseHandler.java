@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ResponseHandler {
 
-    public ResponseEntity<ResponseDTO> getRedirectResponse(String message, HttpStatus httpStatus, String redirectUrl) {
-        ResponseDTO response = new ResponseDTO(message, httpStatus);
+    public ResponseEntity<ResponseDTO> getRedirectResponse(String message, HttpStatus httpStatus, Object data, String redirectUrl) {
+        ResponseDTO response = new ResponseDTO(message, httpStatus, data);
         HttpHeaders headers = new HttpHeaders();
 
         headers.add("Location", redirectUrl);
@@ -19,7 +19,7 @@ public class ResponseHandler {
     }
 
     public ResponseEntity<ResponseDTO> getResponse(String message, HttpStatus httpStatus) {
-        ResponseDTO response = new ResponseDTO(message, httpStatus);
+        ResponseDTO response = new ResponseDTO(message, httpStatus, null);
 
         return ResponseEntity.status(response.getHttpStatus()).body(response);
     }
