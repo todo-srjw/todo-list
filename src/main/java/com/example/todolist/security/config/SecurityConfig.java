@@ -53,8 +53,6 @@ public class SecurityConfig {
                 .logout()
                 .invalidateHttpSession(true) // 세션 무효화
                 .clearAuthentication(true) // 인증 정보 제거
-                .logoutUrl("/todo/member/signOut")
-                .logoutSuccessUrl("/")
                 .and()
                 .cors();
         return http.build();

@@ -47,7 +47,7 @@ public class MemberController {
         try {
 
             memberService.signUpMember(member);
-            return responseHandler.getRedirectResponse(MessageConstants.SUCCESS_MESSAGE, HttpStatus.CREATED, MessageConstants.MAIN_PAGE_URL);
+            return responseHandler.getRedirectResponse(MessageConstants.SUCCESS_MESSAGE, HttpStatus.CREATED, MessageConstants.MAIN_PAGE_URL, member.getEmail());
 
         } catch (IllegalStateException e) {
             return responseHandler.getResponse(e.getMessage(), HttpStatus.CONFLICT);

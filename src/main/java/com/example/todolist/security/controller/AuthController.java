@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RestController
@@ -34,7 +35,7 @@ public class AuthController {
     }
 
     @PostMapping("/signIn")
-    public ResponseEntity<ResponseDTO> signIn(@Valid @RequestBody MemberDTO memberDTO) {
+    public ResponseEntity<ResponseDTO> signIn(@Valid @RequestBody MemberDTO memberDTO, HttpSession session) {
         try {
             Member member = Member.builder()
                     .email(memberDTO.getEmail())
@@ -49,11 +50,13 @@ public class AuthController {
 
             // 인증이 성공하면 SecurityContext에 인증된 사용자 정보 저장
             SecurityContextHolder.getContext().setAuthentication(authenticated);
+            //세션처리
+            session.setAttribute("user", authenticated.getName());
 
             log.info("success!!");
 
             // 로그인 성공 후 리다이렉트할 URL
-            return responseHandler.getRedirectResponse(MessageConstants.SUCCESS_SIGN_IN, HttpStatus.OK, MessageConstants.MAIN_PAGE_URL);
+            return responseHandler.getRedirectResponse(MessageConstants.SUCCESS_SIGN_IN, HttpStatus.OK,authenticated.getName(), MessageConstants.MAIN_PAGE_URL);
 
         } catch (BadCredentialsException e) {
             log.info("fail!!");

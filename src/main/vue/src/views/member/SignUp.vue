@@ -81,7 +81,7 @@ export default {
             };
 
             try {
-                const response = await axios.post("http://localhost:8081/todo/member/signUp", signUpRequest);
+                const response = await axios.post("http://localhost:8080/todo/member/signUp", signUpRequest);
                 console.log(response);
 
                 alert("회원가입 성공");
