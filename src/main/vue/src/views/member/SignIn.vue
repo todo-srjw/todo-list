@@ -37,9 +37,20 @@ export default {
 
             try {
                 const response = await axios.post("http://localhost:8080/todo/member/signIn", signInRequest);
+
+                if(response.status === 200) {
+                    console.log(response);
+
+                    alert("로그인 성공");
+
+                    localStorage.setItem("user", JSON.stringify(response.data.data));
+                    
+                    this.$emit('loginSuccess'); // 부모 컴포넌트에 로그인 성공 이벤트 전파
+                    this.$router.push('/');
+                }
                 
-                console.log(response.data);
             } catch (error) {
+                alert("로그인 실패");
                 console.log("error : ", error);
             }
         },//submitSignIn
