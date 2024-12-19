@@ -1,5 +1,8 @@
 package com.example.todolist.task.service;
 
+import com.example.todolist.notification.repositrory.NotificationRepository;
+import com.example.todolist.notification.service.NotificationService;
+import com.example.todolist.notification.service.NotificationServiceImpl;
 import com.example.todolist.task.entity.Task;
 import com.example.todolist.task.entity.TaskDTO;
 import com.example.todolist.task.repository.TaskRepository;
@@ -11,9 +14,11 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
 
     final TaskRepository taskRepository;
+    private final NotificationServiceImpl notificationServiceImpl;
 
-    public TaskServiceImpl(TaskRepository taskRepository) {
+    public TaskServiceImpl(TaskRepository taskRepository, NotificationServiceImpl notificationServiceImpl) {
         this.taskRepository = taskRepository;
+        this.notificationServiceImpl = notificationServiceImpl;
     }
 
     @Override
@@ -24,7 +29,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void createTask(Task task) {
-        taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+        notificationServiceImpl.createNotification(savedTask.getId(),savedTask.getEmail());
     }
 
     @Override

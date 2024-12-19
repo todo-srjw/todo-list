@@ -5,14 +5,14 @@
       <li
           v-for="notification in notifications"
           :key="notification.id"
-          :class="{ unread: !notification.isRead }"
+          :class="{ unread: notification.isRead === 'N'}"
       >
         <div>
           <p>{{ notification.message }}</p>
-          <small>{{ formatDate(notification.createdAt) }}</small>
+          <small>{{ formatDate(notification.createdDate) }}</small>
         </div>
         <button
-            v-if="!notification.isRead"
+            v-if="notification.isRead === 'N'"
             @click="markAsRead(notification.id)"
         >
           읽음 처리
@@ -29,41 +29,42 @@ export default {
   name: "NotificationList",
   data() {
     return {
-      //notifications: [],
-      notifications: [
-        {
-          id: 1,
-          message: "새로운 작업이 추가되었습니다.",
-          isRead: false,
-          createdAt: "2024-12-06T10:00:00Z",
-        },
-        {
-          id: 2,
-          message: "작업 마감 기한이 도래했습니다.",
-          isRead: true,
-          createdAt: "2024-12-05T08:00:00Z",
-        },
-      ],
+      notifications: [],
+      // notifications: [
+      //   {
+      //     id: 1,
+      //     message: "새로운 작업이 추가되었습니다.",
+      //     isRead: false,
+      //     createdAt: "2024-12-06T10:00:00Z",
+      //   },
+      //   {
+      //     id: 2,
+      //     message: "작업 마감 기한이 도래했습니다.",
+      //     isRead: true,
+      //     createdAt: "2024-12-05T08:00:00Z",
+      //   },
+      // ],
     };
   },
   methods: {
     async fetchNotifications() {
       try {
-        const response = await axios.get("/api/notifications");
+        const response = await axios.get("/todo/notifications/list");
         this.notifications = response.data;
+        console.log(this.notifications);
       } catch (error) {
         console.error("Failed to fetch notifications:", error);
       }
     },
     async markAsRead(notificationId) {
       try {
-        await axios.patch(`/api/notifications/${notificationId}`, {
-          isRead: true,
+        await axios.patch(`/todo/notifications/${notificationId}`, {
+          isRead: "Y",
         });
         const notification = this.notifications.find(
             (n) => n.id === notificationId
         );
-        if (notification) notification.isRead = true;
+        if (notification) notification.isRead = "Y";
       } catch (error) {
         console.error("Failed to mark notification as read:", error);
       }
